@@ -1,4 +1,5 @@
 import subprocess
+import os
 
 
 def cmd_hello(args):
@@ -29,20 +30,25 @@ def cmd_system_temp(args):
     return subprocess.check_output(('sysctl', '-n', 'hw.sensors.ipmi0.temp'))
 
 
+def _disk_free(mount_point):
+    s = os.statvfs(mount_point)
+    return round(float(s.f_bavail * s.f_frsize) /
+                 float(s.f_blocks * s.f_frsize), 3)
+
 def cmd_disk_usage_root(args):
-    return subprocess.check_output(('df', '/')).splitlines()[-1].split()[-2]
+    return _disk_free('/')
 
 
 def cmd_disk_usage_var(args):
-    return subprocess.check_output(('df', '/var')).splitlines()[-1].split()[-2]
+    return _disk_free('/var')
 
 
 def cmd_disk_usage_home(args):
-    return subprocess.check_output(('df', '/home')).splitlines()[-1].split()[-2]
+    return _disk_free('/home')
 
 
 def cmd_disk_usage_tmp(args):
-    return subprocess.check_output(('df', '/tmp')).splitlines()[-1].split()[-2]
+    return _disk_free('/tmp')
 
 
 # this must be at the bottom
