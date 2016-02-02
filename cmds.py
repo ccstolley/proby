@@ -11,7 +11,7 @@ def cmd_cmds(args):
 
 
 def cmd_cpu_load(args):
-    return subprocess.check_output('uptime').split()[-3].replace(',', '')
+    return subprocess.check_output('uptime').decode('utf-8').split()[-3].replace(',', '')
 
 
 def cmd_cpu_idle(args):
@@ -20,7 +20,7 @@ def cmd_cpu_idle(args):
 
 def cmd_mem_free(args):
     if _platform() == "darwin":
-        return subprocess.check_output('vm_stat').splitlines()[1].split()[2].strip('.')
+        return subprocess.check_output('vm_stat').decode('utf-8').splitlines()[1].split()[2].strip('.')
     else:
         return subprocess.check_output('vmstat').splitlines()[-1].split()[3]
 
