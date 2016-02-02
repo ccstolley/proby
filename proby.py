@@ -12,10 +12,16 @@ log = logging.getLogger()
 
 
 def default_cmd(args):
+    """
+    Return a default response when an unknown command is specified.
+    """
     return 'UNKNOWN_COMMAND'
 
 
 def parse_command(line):
+    """
+    Determine the command and dispatch the proper handler function.
+    """
     tokens = line.split()
     cmd, args = tokens[0], tokens[1:]
     try:
@@ -27,6 +33,9 @@ def parse_command(line):
 
 
 def main():
+    """
+    Create and start server.
+    """
     server = ThreadingTCPServer(('', 7000), ProbeHandler)
     server.serve_forever()
 

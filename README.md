@@ -14,9 +14,9 @@ Example Usage
 
 ```
 # start the daemon
-% python ./proby start
+$ python ./proby start
 
 # send a command
-% printf "cpu_load\n" | nc localhost 7000
+$ printf "cpu_load\n" | nc localhost 7000
 0.42
 ```
