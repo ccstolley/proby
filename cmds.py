@@ -7,7 +7,7 @@ def cmd_hello(args):
 
 
 def cmd_cmds(args):
-    return '\n'.join(COMMANDS.keys())
+    return '\n'.join(sorted(COMMANDS.keys()))
 
 
 def cmd_cpu_load(args):
