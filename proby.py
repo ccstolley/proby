@@ -43,8 +43,7 @@ def main():
 class ProbeHandler(StreamRequestHandler):
     def handle(self):
         for line in self.rfile:
-            log.debug(line)
-            response = parse_command(line)
+            response = parse_command(line.strip())
             self.wfile.write('{}\n'.format(response))
             return  # one cmd per connection
 
