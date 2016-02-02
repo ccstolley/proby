@@ -1,8 +1,14 @@
 #!/bin/sh
 # Simple test script to check if probes work
 tests_ok=1
+commands=$(printf "cmds\n"| nc localhost 7000)
 
-for cmd in `printf "cmds\n"| nc localhost 7000`; do
+if [ X"$commands" = X ]; then
+    echo "Proby is not running"
+    exit 1
+fi
+
+for cmd in $commands; do
     val=$(printf "$cmd\n"| nc localhost 7000)
     if [ X"$val" = X -o X"$val" = Xerror ]; then
         echo "$cmd is broken"
