@@ -6,6 +6,10 @@ def cmd_hello(args):
     return 'HELLO'
 
 
+def cmd_cmds(args):
+    return '\n'.join(COMMANDS.keys())
+
+
 def cmd_cpu_load(args):
     return subprocess.check_output('uptime').split()[-3].replace(',', '')
 
