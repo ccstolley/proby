@@ -1,6 +1,7 @@
 """
 Module for creating daemon processes.
 """
+from __future__ import print_function
 import os
 import sys
 import signal
@@ -59,7 +60,7 @@ def daemon_main(main_func, argv=None, pidfile=None):
         pidfile = '/tmp/{}.pid'.format(argv[0])
 
     if len(argv) < 2 or argv[1] not in ('start', 'stop'):
-        print "Usage: {} [start|stop]".format(argv[0])
+        print("Usage: {} [start|stop]".format(argv[0]))
         raise SystemExit(1)
 
     if argv[1] == 'start':
@@ -70,8 +71,8 @@ def daemon_main(main_func, argv=None, pidfile=None):
             with open(pidfile) as fobj:
                 os.kill(int(fobj.read()), signal.SIGTERM)
         else:
-            print "Not running"
+            print("Not running")
             raise SystemExit(1)
     else:
-        print "Unknown command"
+        print("Unknown command")
         raise SystemExit(1)

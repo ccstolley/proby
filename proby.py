@@ -23,10 +23,14 @@ def parse_command(line):
     Determine the command and dispatch the proper handler function.
     """
     tokens = line.split()
-    cmd, args = tokens[0], tokens[1:]
+    cmd, args = tokens[0].decode('utf-8'), tokens[1:]
     try:
         log.info("%s: %s", cmd, args)
-        return COMMANDS.get(cmd, default_cmd)(args)
+        result = COMMANDS.get(cmd, default_cmd)(args)
+        if isinstance(result, bytes):
+            return result.decode('utf-8')
+        else:
+            return result
     except Exception as e:
         log.error("%s: %s", cmd, e)
         return 'error'
@@ -36,15 +40,17 @@ def main():
     """
     Create and start server.
     """
-    server = ThreadingTCPServer(('', 7000), ProbeHandler)
+    server = ProbyServer(('', 7000), ProbeHandler)
     server.serve_forever()
 
+class ProbyServer(ThreadingTCPServer):
+    allow_reuse_address = True 
 
 class ProbeHandler(StreamRequestHandler):
     def handle(self):
         for line in self.rfile:
             response = parse_command(line.strip())
-            self.wfile.write('{}\n'.format(response))
+            self.wfile.write('{}\n'.format(response).encode('utf-8'))
             return  # one cmd per connection
 
     def handle_error(self, request, client_address):
