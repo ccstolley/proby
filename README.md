@@ -1,7 +1,7 @@
 Proby - a system probe
 ==
 
-Proby is a daemon that response to simple text commands to provide
+Proby is a daemon that responds to simple text commands to provide
 system information. This is especially useful for monitoring services
 such as Argus or Nagios.
 
