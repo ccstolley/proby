@@ -19,8 +19,10 @@ def cmd_cpu_idle(args):
 
 
 def cmd_mem_free(args):
-    return subprocess.check_output('vmstat').splitlines()[-1].split()[3]
-
+    if _platform() == "darwin":
+        return subprocess.check_output('vm_stat').splitlines()[1].split()[2]
+    else:
+        return subprocess.check_output('vmstat').splitlines()[-1].split()[3]
 
 def cmd_cpu_temp(args):
     return subprocess.check_output(('sysctl', '-n', 'hw.sensors.cpu0.temp0'))
