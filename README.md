@@ -19,4 +19,8 @@ $ python ./proby start
 # send a command
 $ printf "cpu_load\n" | nc localhost 7000
 0.42
+$ printf "mem_free\n" | nc localhost 7000
+2564492
+$ printf "hello\n" | nc localhost 7000
+HELLO
 ```
