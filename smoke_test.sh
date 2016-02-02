@@ -10,6 +10,6 @@ for cmd in `printf "cmds\n"| nc localhost 7000`; do
     fi
 done
 
-if [ $tests_ok ]; then
+if [ $tests_ok = 1 ]; then
     echo "Tests OK"
 fi
