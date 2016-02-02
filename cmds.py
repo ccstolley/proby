@@ -55,6 +55,13 @@ def cmd_disk_usage_tmp(args):
     return _disk_free('/tmp')
 
 
+def cmd_platform(args):
+    return _platform()
+
+
+def _platform():
+    return os.uname()[0].lower()
+
 # this must be at the bottom
 COMMANDS = {name[4:]: func for name, func in globals().items()
             if callable(func) and name.startswith('cmd_')}
