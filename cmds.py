@@ -20,7 +20,7 @@ def cmd_cpu_idle(args):
 
 def cmd_mem_free(args):
     if _platform() == "darwin":
-        return subprocess.check_output('vm_stat').splitlines()[1].split()[2]
+        return subprocess.check_output('vm_stat').splitlines()[1].split()[2].strip('.')
     else:
         return subprocess.check_output('vmstat').splitlines()[-1].split()[3]
 
