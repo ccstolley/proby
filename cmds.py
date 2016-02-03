@@ -23,7 +23,7 @@ def cmd_mem_free(args):
     if _platform() == "darwin":
         return _shell_exec('vm_stat').splitlines()[1].split()[2].strip('.')
     else:
-        return _shell_exec('vmstat').splitlines()[-1].split()[3]
+        return _shell_exec('vmstat').splitlines()[-1].split()[4]
 
 def cmd_cpu_temp(args):
     return _shell_exec(('sysctl', '-n', 'hw.sensors.cpu0.temp0'))
