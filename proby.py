@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import daemonize
 import logging
 try:

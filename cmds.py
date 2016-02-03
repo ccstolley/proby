@@ -1,5 +1,6 @@
 import subprocess
 import os
+from functools import partial
 
 
 def cmd_hello(args):
@@ -11,29 +12,34 @@ def cmd_cmds(args):
 
 
 def cmd_cpu_load(args):
-    return subprocess.check_output('uptime').decode('utf-8').split()[-3].replace(',', '')
+    return _shell_exec('uptime').split()[-3].replace(',', '')
 
 
 def cmd_cpu_idle(args):
-    return subprocess.check_output('vmstat').splitlines()[-1].split()[-1]
+    return _shell_exec('vmstat').splitlines()[-1].split()[-1]
 
 
 def cmd_mem_free(args):
     if _platform() == "darwin":
-        return subprocess.check_output('vm_stat').decode('utf-8').splitlines()[1].split()[2].strip('.')
+        return _shell_exec('vm_stat').splitlines()[1].split()[2].strip('.')
     else:
-        return subprocess.check_output('vmstat').splitlines()[-1].split()[3]
+        return _shell_exec('vmstat').splitlines()[-1].split()[3]
 
 def cmd_cpu_temp(args):
-    return subprocess.check_output(('sysctl', '-n', 'hw.sensors.cpu0.temp0'))
+    return _shell_exec(('sysctl', '-n', 'hw.sensors.cpu0.temp0'))
 
 
 def cmd_fan_speeds(args):
-    return subprocess.check_output(('sysctl', '-n', 'hw.sensors.ipmi0.fan'))
+    return _shell_exec(('sysctl', '-n', 'hw.sensors.ipmi0.fan'))
 
 
 def cmd_system_temp(args):
-    return subprocess.check_output(('sysctl', '-n', 'hw.sensors.ipmi0.temp'))
+    funcs = (partial(_shell_exec, ('sysctl', '-n', 'hw.sensors.ipmi0.temp')),
+             partial(_shell_exec, ('sysctl', '-n', 'hw.sensors.acpitz0.temp0')))
+    for f in funcs:
+        r = f()
+        if r:
+            return r
 
 
 def _disk_free(mount_point):
@@ -63,6 +69,10 @@ def cmd_platform(args):
 
 def _platform():
     return os.uname()[0].lower()
+
+
+def _shell_exec(args):
+    return subprocess.check_output(args).decode('utf-8')
 
 # this must be at the bottom
 COMMANDS = {name[4:]: func for name, func in globals().items()
