@@ -26,7 +26,7 @@ def cmd_mem_free(args):
         return _shell_exec('vmstat').splitlines()[-1].split()[4]
 
 def cmd_cpu_temp(args):
-    return _shell_exec(('sysctl', '-n', 'hw.sensors.cpu0.temp0'))
+    return _shell_exec(('sysctl', '-n', 'hw.sensors.cpu0.temp'))
 
 
 def cmd_fan_speeds(args):
@@ -35,7 +35,7 @@ def cmd_fan_speeds(args):
 
 def cmd_system_temp(args):
     funcs = (partial(_shell_exec, ('sysctl', '-n', 'hw.sensors.ipmi0.temp')),
-             partial(_shell_exec, ('sysctl', '-n', 'hw.sensors.acpitz0.temp0')))
+             partial(_shell_exec, ('sysctl', '-n', 'hw.sensors.acpitz0.temp')))
     for f in funcs:
         r = f()
         if r:
