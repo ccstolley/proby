@@ -16,7 +16,10 @@ def cmd_cpu_load(args):
 
 
 def cmd_cpu_idle(args):
-    return _shell_exec('vmstat').splitlines()[-1].split()[-1]
+    if _platform() == 'darwin':
+        return _shell_exec('iostat').splitlines()[-1].split()[8]
+    else:
+        return _shell_exec('vmstat').splitlines()[-1].split()[-1]
 
 
 def cmd_mem_free(args):
@@ -26,7 +29,10 @@ def cmd_mem_free(args):
         return _shell_exec('vmstat').splitlines()[-1].split()[4]
 
 def cmd_cpu_temp(args):
-    return _shell_exec(('sysctl', '-n', 'hw.sensors.cpu0.temp'))
+    if _platform() == 'darwin':
+        return _shell_exec(('sysctl', '-n', 'machdep.xcpm.cpu_thermal_level'))
+    else:
+        return _shell_exec(('sysctl', '-n', 'hw.sensors.cpu0.temp'))
 
 
 def cmd_fan_speeds(args):
@@ -56,7 +62,10 @@ def cmd_disk_usage_var(args):
 
 
 def cmd_disk_usage_home(args):
-    return _disk_free('/home')
+    if _platform() == 'darwin':
+        return _disk_free('/Users')
+    else:
+        return _disk_free('/home')
 
 
 def cmd_disk_usage_tmp(args):
