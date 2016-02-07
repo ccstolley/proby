@@ -48,28 +48,27 @@ def cmd_system_temp(args):
             return r
 
 
-def _disk_free(mount_point):
+def _percent_disk_used(mount_point):
     s = os.statvfs(mount_point)
-    return round(float(s.f_bavail * s.f_frsize) /
-                 float(s.f_blocks * s.f_frsize), 3)
+    return 1 - round(float(s.f_bavail) / float(s.f_blocks), 3)
 
 def cmd_disk_usage_root(args):
-    return _disk_free('/')
+    return _percent_disk_used('/')
 
 
 def cmd_disk_usage_var(args):
-    return _disk_free('/var')
+    return _percent_disk_used('/var')
 
 
 def cmd_disk_usage_home(args):
     if _platform() == 'darwin':
-        return _disk_free('/Users')
+        return _percent_disk_used('/Users')
     else:
-        return _disk_free('/home')
+        return _percent_disk_used('/home')
 
 
 def cmd_disk_usage_tmp(args):
-    return _disk_free('/tmp')
+    return _percent_disk_used('/tmp')
 
 
 def cmd_platform(args):
