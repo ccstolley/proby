@@ -9,7 +9,7 @@ if [ X"$commands" = X ]; then
 fi
 
 for cmd in $commands; do
-    val=$(printf "$cmd\n"| nc localhost 7000)
+    val=$(printf "%s\n" "$cmd" | nc localhost 7000)
     if [ X"$val" = X -o X"$val" = Xerror ]; then
         echo "$cmd is broken"
         tests_ok=0
