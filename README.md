@@ -23,4 +23,7 @@ $ printf "mem_free\n" | nc localhost 7000
 2564492
 $ printf "hello\n" | nc localhost 7000
 HELLO
+
+# stop the daemon
+$ python ./proby stop
 ```
